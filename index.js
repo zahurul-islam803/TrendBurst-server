@@ -32,18 +32,33 @@ async function run() {
     // await client.connect();
     // Send a ping to confirm a successful connection
 
-      const productCollection = client.db('trendBurst').collection('products');
+    const usersCollection = client.db("trendBurst").collection("users");
+    const productsCollection = client.db("trendBurst").collection("products");
 
-      app.get('/products', async (req, res)=>{
-        let queryObj = {}
-        const category = req.query.category;
-        if(category){
-          queryObj.category = category;
-        }
-        const result = await productCollection.find(queryObj).toArray();
-        res.send(result);
-      })
+    app.get("/products", async (req, res) => {
+      let queryObj = {};
+      const category = req.query.category;
+      if (category) {
+        queryObj.category = category;
+      }
+      const result = await productsCollection.find(queryObj).toArray();
+      res.send(result);
+    });
 
+    // Save or modify user email, status in Database
+    app.put("/users", async (req, res) => {
+      const user = req.body;
+      const query = { email: user.email };
+      const options = { upsert: true };
+      const result = await usersCollection.updateOne(
+        query,
+        {
+          $set: user,
+        },
+        options
+      );
+      res.send(result);
+    });
 
     await client.db("admin").command({ ping: 1 });
     console.log(
