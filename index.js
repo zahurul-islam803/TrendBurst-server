@@ -1,4 +1,4 @@
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const express = require("express");
 const app = express();
 require("dotenv").config();
@@ -35,6 +35,7 @@ async function run() {
     const usersCollection = client.db("trendBurst").collection("users");
     const productsCollection = client.db("trendBurst").collection("products");
 
+    // get all product
     app.get("/products", async (req, res) => {
       let queryObj = {};
       const category = req.query.category;
@@ -44,6 +45,13 @@ async function run() {
       const result = await productsCollection.find(queryObj).toArray();
       res.send(result);
     });
+
+    // get single product
+    app.get('/products/:id', async(req, res) => {
+      const id = req.params.id;
+      const result = await productsCollection.findOne({_id: new ObjectId(id)});
+      res.send(result);
+    })
 
     // Save or modify user email, status in Database
     app.put("/users", async (req, res) => {
