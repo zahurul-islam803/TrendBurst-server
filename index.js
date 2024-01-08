@@ -61,6 +61,14 @@ async function run() {
       res.send(result);
     })
 
+    // get cart data
+    app.get('/carts', async(req, res)=>{
+      const email = req.query.userEmail;
+      const query = {email: email};
+      const result = await cartsCollection.find(query).toArray();
+      res.send(result);
+    })
+
     // Save or modify user email, status in Database
     app.put("/users", async (req, res) => {
       const user = req.body;
