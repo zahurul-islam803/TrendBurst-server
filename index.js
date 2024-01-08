@@ -34,6 +34,7 @@ async function run() {
 
     const usersCollection = client.db("trendBurst").collection("users");
     const productsCollection = client.db("trendBurst").collection("products");
+    const cartsCollection = client.db("trendBurst").collection("carts");
 
     // get all product
     app.get("/products", async (req, res) => {
@@ -50,6 +51,13 @@ async function run() {
     app.get('/products/:id', async(req, res) => {
       const id = req.params.id;
       const result = await productsCollection.findOne({_id: new ObjectId(id)});
+      res.send(result);
+    })
+
+    // post data to cart
+    app.post('/products/cart', async(req, res)=> {
+      const cart = req.body;
+      const result = await cartsCollection.insertOne(cart);
       res.send(result);
     })
 
