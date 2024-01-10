@@ -69,6 +69,14 @@ async function run() {
       res.send(result);
     })
 
+    // delete cart item
+    app.delete('/carts/:id', async(req, res)=>{
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)};
+      const result = await cartsCollection.deleteOne(query);
+      res.send(result);
+    })
+
     // Save or modify user email, status in Database
     app.put("/users", async (req, res) => {
       const user = req.body;
