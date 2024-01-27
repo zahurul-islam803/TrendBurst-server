@@ -8,7 +8,7 @@ const port = process.env.PORT || 5000;
 
 // middleware
 const corsOptions = {
-  origin: ["http://localhost:5173", "http://localhost:5174"],
+  origin: ["http://localhost:5173", "https://trendburst.web.app"],
   credentials: true,
   optionSuccessStatus: 200,
 };
